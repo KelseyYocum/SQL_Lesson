@@ -6,13 +6,14 @@ CONN = None
 def get_student_by_github(github):
     query = """SELECT first_name, last_name, github FROM Students WHERE github = ?"""
     DB.execute(query, (github,))
-    row = DB.fetchone()
-    if row == None:
-        print "No student by that name."
-    else:
-        print """\
-        Student: %s %s
-        Github account: %s"""%(row[0], row[1], row[2])
+    row = DB.fetchone() #returns a tuple that is one line from database
+    return row
+    # if row == None:
+    #     return "No student by that name."
+    # else:
+    #     return """\
+    #     Student: %s %s
+    #     Github account: %s"""%(row[0], row[1], row[2])
 
 def connect_to_db():
     global DB, CONN
@@ -30,13 +31,14 @@ def search_by_project(project_title):
     query = """SELECT title, description, max_grade FROM Projects WHERE title =?"""
     DB.execute(query, (project_title,))
     row = DB.fetchone()
-    if row == None:
-        print "No project found by that name."
-    else:
-        print """\
-        Project: %s
-        description: %s
-        max_grade: %d"""%(row[0], row[1], row[2]) 
+    return row
+    # if row == None:
+    #     print "No project found by that name."
+    # else:
+    #     print """\
+    #     Project: %s
+    #     description: %s
+    #     max_grade: %d"""%(row[0], row[1], row[2]) 
 
 def make_new_project(title, description, max_grade):
     query = """INSERT into Projects values (?, ?, ?)"""
@@ -45,41 +47,50 @@ def make_new_project(title, description, max_grade):
     print "Successfully added project: %s %s %s" % (title, description, max_grade)
 
 def search_for_project_grade(project_title):
-    query = """SELECT first_name, project_title, grade FROM Students JOIN Grades ON (github = student_github) WHERE project_title = ?"""
+    query = """SELECT first_name, last_name, project_title, grade FROM Students JOIN Grades ON (github = student_github) WHERE project_title = ?"""
     DB.execute(query, (project_title,))
     rows = DB.fetchall()
-    if rows == []:
-        print "No projects found by that name."
-    else:
-        for row in rows:
-            print """\
-            First Name: %s
-            Project: %s
-            Grade: %d"""%(row[0], row[1], row[2])
+    return rows
+    # if rows == []:
+    #     print "No projects found by that name."
+    # else:
+    #     for row in rows:
+    #         print """\
+    #         First Name: %s
+    #         Project: %s
+    #         Grade: %d"""%(row[0], row[1], row[2])
 
-def give_grade (github, project_title, grade):
-    query = """ INSERT into Grades values (?, ?, ?)"""
-    DB.execute(query, (github, project_title, grade))
+def give_grade (first_name, last_name, project_title, grade):
+    github = """SELECT github FROM Students WHERE first_name=? AND last_name=?"""
+    DB.execute(github, (first_name, last_name))
+    row = DB.fetchone()
+    stu_github = row[0]
+    query = """INSERT into Grades values (?, ?, ?)"""
+    DB.execute(query, (stu_github, project_title, grade))
     CONN.commit()
-    print "Successfully gave grade of %s to %s for %s." %(grade, github, project_title)
+    print "Successfully gave grade of %s for %s." %(grade, project_title)
+
+
 
 def show_grades(first_name, last_name):
-    query = """SELECT first_name, last_name, project_title, grade FROM Students JOIN Grades ON (github = student_github) WHERE first_name = ? AND last_name = ?"""
+    query = """SELECT first_name, last_name, project_title, grade FROM Students LEFT JOIN Grades ON (github = student_github) WHERE first_name = ? AND last_name = ?"""
     DB.execute(query, (first_name, last_name))
     rows = DB.fetchall()
-    if rows == []:
-        print "That student does not exist"
-    else:
-        for row in rows:
-            print """\
-            First Name: %s
-            Last Name: %s
-            Project Title: %s
-            Grade: %r"""%(row[0],row[1],row[2],row[3])
+    return rows
+    # if rows == []:
+    #     print "That student does not exist"
+    # else:
+    #     for row in rows:
+    #         print """\
+    #         First Name: %s
+    #         Last Name: %s
+    #         Project Title: %s
+    #         Grade: %r"""%(row[0],row[1],row[2],row[3])
 
 def main():
     connect_to_db()
     command = None
+    give_grade("Mica", "Megan", "Cake", 40)
     while command != "quit":
         input_string = raw_input("HBA Database> ")
         tokens = input_string.split()

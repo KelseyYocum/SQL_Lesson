@@ -1,0 +1,14 @@
+<html>
+    <body>
+        <a href="/">Home</a>
+        <h1>Student: {{first_name}} {{last_name}}</h1>
+        <ul>
+            <!-- {% if list_of_rows[0] == None %}
+            <p>Student has no projects.</p>
+            {% endif %} -->
+            {% for row in list_of_rows %}
+                <li>Project Name: <a href="/project?title={{row[2]}}">{{row[2]}}</a>, Grade: {{row[3]}}</li>
+            {% endfor %}
+        </ul>
+    </body>
+</html>

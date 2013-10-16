@@ -1,0 +1,96 @@
+<html>
+    <head>
+        <style>
+            body {
+                background-image: url("http://www.wallchan.com/images/medium/1361-magic-math-wallpaper-wallchan.png");
+                color: #FFFFFF;
+                font-family: arial;
+
+            }
+
+            .form{
+                background-color: rgba(0, 0, 0, .75);
+                padding: 20px;
+                margin: 50px;
+                width: 300px;
+                height: 300px;
+
+            }
+            h2{
+                margin: 0px 0px 10px 0px;
+            }
+
+            h1{
+                font-size: 40px;
+                padding: 10px;
+                margin: 50px 0px 0px 180px;
+                background-color: rgba(0, 0, 0, .75);
+                width:580px;
+            }
+
+            #left{
+                float: left;
+            }
+
+            #right{
+                float: left;
+            }
+
+
+        </style>
+    </head>
+        <body>
+            <h1>Hackbright Grading Database</h1>
+
+            <div id="left">
+                <div class = "form" id="Search">
+                    <h2>Search for a Student:</h2>
+                    <form action="/student">
+                        <label>Enter student's first and last name </label><br>
+                        <input type="text" name="student_name" /><br>
+                        <input type = "submit">
+                    </form>
+                </div>
+
+                <div class = "form" id="NewStudent">
+                    <h2>Add a Student:</h2>
+                    <form action="/new_student" method="POST">
+                        <label>Enter student's first and last name </label><br>
+                        <input type="text" name="student_name" /><br><br>
+                        <label>Enter student's github</label><br>
+                        <input type="text" name="github" /><br>
+                        <input type = "submit">
+                    </form>
+                </div>
+            </div>
+
+            <div id="right">
+                <div class = "form" id="Project">
+                    <h2>Add a Project:</h2>
+                    <form action="/new_project">
+                        <label>Enter a project name</label><br>
+                        <input type="text" name ="project_title" /><br><br>
+                        <label>Enter a project description</label><br>
+                        <input type="text" name="project_description" /><br><br>
+                        <label>Enter a max grade</label><br>
+                        <input type="text" name="max_grade" /><br>
+                        <input type = "submit">
+                    </form>
+                </div>
+
+                <div class = "form" id="GradeProject">
+                    <h2>Grade a Project:</h2>
+                    <form action="/give_grade">
+                        <label>Enter a student's first and last name</label><br>
+                        <input type="text" name ="student_name" /><br><br>
+                        <label>Enter a project name</label><br>
+                        <input type="text" name="project_title" /><br><br>
+                        <label>Enter a grade</label><br>
+                        <input type="text" name="grade" /><br>
+                        <input type = "submit">
+                    </form>
+                </div>
+            </div>
+
+        </body>
+</html>
